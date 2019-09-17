@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>MD-on-save</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			.md-on-save-warn {
+				background: #ffc0c0;
+				color: #800000;
+				font-weight: 800;
+				font-size: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		{}
+	</body>
+	<script>
+		var ws = new WebSocket('ws://localhost:8000/ws')
+
+		ws.onerror = evt => {
+			document.body.innerHTML =
+				'<p class="md-on-save-warn">Could not establish WebSocket ' +
+				'connection. MD-on-save will be unable to reload the page ' +
+				'when the document is saved.' +
+				document.body.innerHTML
+		}
+
+		ws.onmessage = evt => {
+			if (evt.data === 'md-on-save-reload') {
+				window.location.reload(true)
+			}
+		}
+	</script>
+</html>
